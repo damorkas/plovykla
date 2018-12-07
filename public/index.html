@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        .main {
+            height: 100%;
+            width: 100%;
+            display: table;
+        }
+
+        .wrapper {
+            display: table-cell;
+            height: 100%;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="style"></div>
+    <div class="main">
+        <div class="wrapper">
+            <div style="color: white;">
+                <div id="status" style="width:20%; padding-left: 40px; float:left; font-size: 36pt; font-weight: bold;"></div>
+                <div id="date" style="text-align: center; width:80%; float:left; margin-left: -10%; font-size: 36pt; font-weight: bold;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            "use strict";
+            var serviceOriginUrl,
+                localIp,
+                sekundes = 5;
+
+            function makeCall() {
+                try {
+                    var cameraInfo = getCameraInfo();
+                    var cameraInfoParsed = JSON.parse(cameraInfo);
+                    if (typeof cameraInfoParsed !== "undefined") {
+                        setHtmlData(true, cameraInfoParsed);
+                    }
+                } catch (error) {
+                    setHtmlData(false, null);
+                    sendMsgToservice("e_fe_002 " + error);
+                    sendMsgToservice("-> " + cameraInfo);
+                } finally {
+                    setTimeout(makeCall, sekundes * 1000);
+                }
+            }
+
+            function setHtmlData(isValid, cameraInfoParsed) {
+                if (isValid) {
+                    document.getElementById("status").innerHTML =
+                        typeof cameraInfoParsed.status !== "undefined" ? cameraInfoParsed.status : "-";
+                    document.getElementById("date").innerHTML =
+                        typeof cameraInfoParsed.date !== "undefined" ? cameraInfoParsed.date : "-";
+                    document.getElementById("style").innerHTML =
+                        typeof cameraInfoParsed.style !== "undefined" ? cameraInfoParsed.style :
+                        "<style> body { background-color: gray; } </style>";
+                } else {
+                    document.getElementById("status").innerHTML = "-";
+                    document.getElementById("date").innerHTML = "-";
+                    document.getElementById("style").innerHTML =
+                        "<style> body { background-color: gray; } </style>";
+                }
+            }
+
+            function sendMsgToservice(msg) {
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open("POST", serviceOriginUrl + "/logmsg", false);
+                xmlHttp.send(msg || "empty");
+            }
+
+            function getCameraInfo() {
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open("GET", serviceOriginUrl + "/status/" + localIp, false);
+                xmlHttp.send(null);
+                return xmlHttp.responseText;
+            }
+
+            function getLocalIp(callback) {
+                var ips = [];
+                try {
+                    // NOTE: window.RTCPeerConnection is "not a constructor" in FF22/23
+                    var RTCPeerConnection = /*window.RTCPeerConnection ||*/ window.webkitRTCPeerConnection ||
+                        window.mozRTCPeerConnection;
+                    if (RTCPeerConnection) {
+                        (function () {
+                            var rtc = new RTCPeerConnection({
+                                iceServers: []
+                            });
+
+                            if (1 || window.mozRTCPeerConnection) {
+                                rtc.createDataChannel('', {
+                                    reliable: false
+                                });
+                            };
+
+                            rtc.onicecandidate = function (evt) {
+                                if (evt.candidate) grepSDP("a=" + evt.candidate.candidate);
+                            };
+
+                            rtc.createOffer(function (offerDesc) {
+                                grepSDP(offerDesc.sdp);
+                                rtc.setLocalDescription(offerDesc);
+                            }, function (e) {
+                                sendMsgToservice("e_fe_ip3 " + e);
+                            });
+
+
+                            var addrs = Object.create(null);
+                            addrs["0.0.0.0"] = false;
+
+                            function updateIpVar(newAddr) {
+                                if (newAddr in addrs) return;
+                                else addrs[newAddr] = true;
+                                var displayAddrs = Object.keys(addrs).filter(function (k) {
+                                    return addrs[k];
+                                });
+                                ips = displayAddrs || "n/a";
+                                callback(ips);
+                            }
+
+                            function grepSDP(sdp) {
+                                var hosts = [];
+                                sdp.split('\r\n').forEach(function (line) { // c.f. http://tools.ietf.org/html/rfc4566#page-39
+                                    if (~line.indexOf("a=candidate")) { // http://tools.ietf.org/html/rfc4566#section-5.13
+                                        var parts = line.split(' '), // http://tools.ietf.org/html/rfc5245#section-15.1
+                                            addr = parts[4],
+                                            type = parts[7];
+                                        if (type === 'host') {
+                                            updateIpVar(addr);
+                                        }
+                                    } else if (~line.indexOf("c=")) { // http://tools.ietf.org/html/rfc4566#section-5.7
+                                        var parts = line.split(' '),
+                                            addr = parts[2];
+                                        updateIpVar(addr);
+                                    }
+                                });
+                            }
+                        })();
+                    } else {
+                        sendMsgToservice("e_fe_ip1");
+                    }
+                } catch (error) {
+                    sendMsgToservice("e_fe_ip2");
+                }
+            }
+
+            // init
+            (function iife() {
+                serviceOriginUrl = location.origin;
+                getLocalIp(function (ip) {
+                    if (typeof serviceOriginUrl !== "undefined") {
+                        sendMsgToservice("location.origin: " + serviceOriginUrl);
+                        if (typeof ip !== "undefined") {
+                            sendMsgToservice("localIp: " + ip);
+                            if (typeof ip === "object") {
+                                ip = ip[0];
+                            }     
+                            // TEST set local BrightSign Ip
+                            // localIp = "88.119.145.202";
+                            localIp = ip;
+                            makeCall();
+                        } else {
+                            sendMsgToservice("e_fe_002 -> localIp");
+                        }
+                    } else {
+                        sendMsgToservice("e_fe_001 -> location.origin");
+                    }
+                });
+            }());
+        }());
+    </script>
+</body>
+
+</html>
