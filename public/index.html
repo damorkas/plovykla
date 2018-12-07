@@ -177,13 +177,13 @@
                 var ipUrl = getQueryString("ip");
                 var tempSekundes = getQueryString("sekundes");
 
-                console.log('path ip:', ipUrl);
+                sendMsgToservice('path ip:', ipUrl);
 
                 if (tempSekundes) {
                     sekundes = tempSekundes;
                 }
 
-                console.log('sekundes: ', sekundes);
+                sendMsgToservice('sekundes: ', sekundes);
 
                 if (ipUrl) {
                     if (typeof serviceOriginUrl !== "undefined") {
@@ -196,7 +196,6 @@
                     }
                 } else {
                     getLocalIp(function (ip) {
-                        console.log('ip: ', ip);
                         if (typeof serviceOriginUrl !== "undefined") {
                             sendMsgToservice("location.origin: " + serviceOriginUrl);
                             if (typeof ip !== "undefined") {
