@@ -53,6 +53,7 @@ app.get('/status/:ip', nocache, (req, res) => {
     rp(optionsCopy)
         .then(function ($) {
             date = new Date();
+            date.setHours(date.getHours() + 2);
             date = date.toLocaleDateString("lt") + " " + date.toLocaleTimeString("lt");
             obj.date = date;
 
