@@ -46,9 +46,11 @@ app.get('/status/:ip', nocache, (req, res) => {
     };
 
     options.uri = `http://${ip}:8081/ISAPI/system/IO/outputs/1/status`;
+    options.timeout = 5000;
 
     var optionsCopy = Object.assign({}, options);
     optionsCopy.uri = `http://${ip}:8081/ISAPI/system/IO/inputs/1/status`;
+    optionsCopy.timeout = 5000;
 
     rp(optionsCopy)
         .then(function ($) {
