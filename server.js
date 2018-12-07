@@ -30,9 +30,9 @@ function nocache(req, res, next) {
 }
 
 app.use(cors());
-app.use('/static', express.static('public'));
+app.use(express.static(__dirname + '/public'));
 
-app.get('/', (req, res) => {
+app.get('/proxy', (req, res) => {
     res.send("proxy")
 });
 
@@ -99,6 +99,10 @@ app.post("/logmsg", (req, res) => {
         console.log(body);
         res.end('ok');
     });
+});
+
+app.get('/*', (req, res) => {
+    res.sendFile(__dirname + '/public/index.html');
 });
 
 app.listen(port, () => console.log(`CircelK app listening on port ${port}...`));
