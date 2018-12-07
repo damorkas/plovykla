@@ -163,12 +163,17 @@
             (function iife() {
                 serviceOriginUrl = location.origin;
 
-                var url_string = window.location.href;
-                var URL = URL || window.URL;
-                var url2 = new URL(url_string);
-                var ipUrl = url2.searchParams.get("ip");
+                //var url_string = window.location.href;
+                //var URL = URL || window.URL;
+                //var url2 = new URL(url_string);
 
-                var tempSekundes = url2.searchParams.get("sekundes");
+                var urlParams = new URLSearchParams(location.search);
+
+                var ipUrl = urlParams.get("ip");
+                var tempSekundes = urlParams.get("sekundes");
+
+                // var ipUrl = url2.searchParams.get("ip");
+                // var tempSekundes = url2.searchParams.get("sekundes");
 
                 console.log('path ip:', ipUrl);
 
