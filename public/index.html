@@ -164,8 +164,9 @@
                 serviceOriginUrl = location.origin;
 
                 var url_string = window.location.href;
-                var url = new URL(url_string);
-                var ipUrl = url.searchParams.get("ip");
+                var URL = URL || window.URL;
+                var url2 = new URL(url_string);
+                var ipUrl = url2.searchParams.get("ip");
 
                 var tempSekundes = url.searchParams.get("sekundes");
 
