@@ -42,7 +42,7 @@
             "use strict";
             var serviceOriginUrl,
                 localIp,
-                sekundes = 5;
+                sekundes = 30;
 
             function makeCall() {
                 try {
@@ -162,25 +162,52 @@
             // init
             (function iife() {
                 serviceOriginUrl = location.origin;
-                getLocalIp(function (ip) {
+
+                var url_string = window.location.href;
+                var url = new URL(url_string);
+                var ipUrl = url.searchParams.get("ip");
+
+                var tempSekundes = url.searchParams.get("sekundes");
+
+                console.log('path ip:', ipUrl);
+
+                if (tempSekundes) {
+                    sekundes = tempSekundes;
+                }
+
+                console.log('sekundes: ', );
+
+                if (ipUrl) {
                     if (typeof serviceOriginUrl !== "undefined") {
                         sendMsgToservice("location.origin: " + serviceOriginUrl);
-                        if (typeof ip !== "undefined") {
-                            sendMsgToservice("localIp: " + ip);
-                            if (typeof ip === "object") {
-                                ip = ip[0];
-                            }     
-                            // TEST set local BrightSign Ip
-                            localIp = "88.119.145.202";
-                            //localIp = ip;
-                            makeCall();
-                        } else {
-                            sendMsgToservice("e_fe_002 -> localIp");
-                        }
+                        sendMsgToservice("localIp: " + ipUrl);
+                        localIp = ipUrl;
+                        makeCall();
                     } else {
                         sendMsgToservice("e_fe_001 -> location.origin");
                     }
-                });
+                } else {
+                    getLocalIp(function (ip) {
+                        console.log('ip: ', ip);
+                        if (typeof serviceOriginUrl !== "undefined") {
+                            sendMsgToservice("location.origin: " + serviceOriginUrl);
+                            if (typeof ip !== "undefined") {
+                                sendMsgToservice("localIp: " + ip);
+                                if (typeof ip === "object") {
+                                    ip = ip[0];
+                                }
+                                // TEST set local BrightSign Ip
+                                // localIp = "88.119.145.202";
+                                localIp = ip;
+                                makeCall();
+                            } else {
+                                sendMsgToservice("e_fe_002 -> localIp");
+                            }
+                        } else {
+                            sendMsgToservice("e_fe_001 -> location.origin");
+                        }
+                    });
+                }
             }());
         }());
     </script>

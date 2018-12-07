@@ -54,8 +54,11 @@ app.get('/status/:ip', nocache, (req, res) => {
         .then(function ($) {
             date = new Date();
             date.setHours(date.getHours() + 2);
-            date = date.toLocaleDateString("lt") + " " + date.toLocaleTimeString("lt");
-            obj.date = date;
+
+            var dateStart = date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
+
+            date = dateStart + " " + date.toLocaleTimeString("lt");
+            obj.date = date.toString();
 
             // console.log(ip, "  ", $('body ioState').text());
 
