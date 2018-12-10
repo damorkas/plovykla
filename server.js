@@ -70,10 +70,10 @@ app.get('/status/:ip', nocache, (req, res) => {
                     .then(function ($) {
                         if ($('body').text().includes("inactive", 9)) {
                             obj.status = "PLOVYKLA LAISVA";
-                            obj.style = "<style> body { background-color: green; } </style>";
+                            obj.style = "<style> body { background-color: #339900; } </style>";
                         } else {
                             obj.status = "PLOVYKLA UŽIMTA";
-                            obj.style = "<style> body { background-color: red; } </style>";
+                            obj.style = "<style> body { background-color: #cc0000; } </style>";
                         }
 
                         res.send(obj);
@@ -84,7 +84,7 @@ app.get('/status/:ip', nocache, (req, res) => {
                     });
             } else {
                 obj.status = "PLOVYKLA NEVEIKIA";
-                obj.style = "<style> body { background-color: red; } </style>";
+                obj.style = "<style> body { background-color: #cc0000; } </style>";
                 res.send(obj);
             }
         })
