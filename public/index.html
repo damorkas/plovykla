@@ -25,6 +25,21 @@
             height: 100%;
             vertical-align: middle;
         }
+
+        @font-face {
+            font-family: 'Gotham-Bold';
+            src: 
+                url("./font/Gotham-Bold.eot?#iefix") format("embedded-opentype"), 
+                url("./font/Gotham-Bold.otf") format("opentype"), 
+                url("./font/Gotham-Bold.woff") format("woff"), 
+                url("./font/Gotham-Bold.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal
+        }
+
+        div#status {
+            font-family: 'Gotham-Bold';
+        }
     </style>
 </head>
 
@@ -33,8 +48,8 @@
     <div class="main">
         <div class="wrapper">
             <div style="color: white;">
-                <div id="status" style="width:30%; padding-left: 40px; font-size: 20pt; font-weight: bold; display: inline-block;"></div>
-                <div id="date" style="text-align: center; width: 70%; margin-left: -10%; font-size: 20pt; font-weight: bold; display: inline-block;"></div>
+                <div id="status" style="width:100%; padding-left: 40px; font-size: 38pt; font-weight: bold; display: inline-block;"></div>
+                <!-- <div id="date" style="text-align: center; width: 70%; margin-left: -10%; font-size: 20pt; font-weight: bold; display: inline-block;"></div> -->
             </div>
         </div>
     </div>
@@ -66,14 +81,14 @@
                 if (isValid) {
                     document.getElementById("status").innerHTML =
                         typeof cameraInfoParsed.status !== "undefined" ? cameraInfoParsed.status : "-";
-                    document.getElementById("date").innerHTML =
-                        typeof cameraInfoParsed.date !== "undefined" ? cameraInfoParsed.date : "-";
+                    // document.getElementById("date").innerHTML =
+                    //     typeof cameraInfoParsed.date !== "undefined" ? cameraInfoParsed.date : "-";
                     document.getElementById("style").innerHTML =
                         typeof cameraInfoParsed.style !== "undefined" ? cameraInfoParsed.style :
-                        "<style> body { background-color: gray; } </style>";
+                            "<style> body { background-color: gray; } </style>";
                 } else {
                     document.getElementById("status").innerHTML = "-";
-                    document.getElementById("date").innerHTML = "-";
+                    // document.getElementById("date").innerHTML = "-";
                     document.getElementById("style").innerHTML =
                         "<style> body { background-color: gray; } </style>";
                 }
