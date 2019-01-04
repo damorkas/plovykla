@@ -97,14 +97,14 @@ app.get('/status/:ip', nocache, (req, res) => {
 app.post("/logmsg", (req, res) => {
     var body = "";
 
-    console.log("body --> ", req.body);
+    console.log("body --------------------> ", req.body);
 
     req.on('data', chunk => {
         body += chunk.toString();
     });
 
     req.on('end', () => {
-        console.log(body);
+        console.log('chunked body --------------------> ', body);
         res.end('ok');
     });
 });
