@@ -213,10 +213,6 @@
                     }
                 } else {
                     getLocalIp(function (ip) {
-
-                        sendMsgToservice("------------------->>>>>>>");
-                        sendMsgToservice(ip);
-
                         if (typeof serviceOriginUrl !== "undefined") {
                             sendMsgToservice("location.origin: " + serviceOriginUrl);
                             if (typeof ip !== "undefined") {

@@ -37,7 +37,12 @@ app.get('/proxy', (req, res) => {
 });
 
 app.get('/status/:ip', nocache, (req, res) => {
-    const ip = req.params.ip;
+    // pasiimamas 192.xxx.x.xxx ip, kas nėr gerai..
+    // const ip = req.params.ip;
+
+    // bandom taip:
+    var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
     var date;
     var obj = {
         date: "-",
@@ -96,12 +101,9 @@ app.get('/status/:ip', nocache, (req, res) => {
 
 app.post("/logmsg", (req, res) => {
     var body = "";
-
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
     console.log("ip --------------------> ", ip);
-
-    console.log("body --------------------> ", req.body);
 
     req.on('data', chunk => {
         body += chunk.toString();
