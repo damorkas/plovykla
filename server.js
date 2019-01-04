@@ -97,6 +97,8 @@ app.get('/status/:ip', nocache, (req, res) => {
 app.post("/logmsg", (req, res) => {
     var body = "";
 
+    console.log("body --> ", req.body);
+
     req.on('data', chunk => {
         body += chunk.toString();
     });
