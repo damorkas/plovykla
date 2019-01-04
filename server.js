@@ -97,6 +97,10 @@ app.get('/status/:ip', nocache, (req, res) => {
 app.post("/logmsg", (req, res) => {
     var body = "";
 
+    var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+    console.log("ip --------------------> ", ip);
+
     console.log("body --------------------> ", req.body);
 
     req.on('data', chunk => {
