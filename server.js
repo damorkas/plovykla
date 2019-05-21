@@ -38,10 +38,16 @@ app.get('/proxy', (req, res) => {
 
 app.get('/status/:ip', nocache, (req, res) => {
     // pasiimamas 192.xxx.x.xxx ip, kas nėr gerai..
-    // const ip = req.params.ip;
+    const ip = req.params.ip;
 
     // bandom taip:
+
+    console.log("BE atejo IP: ", ip);
+
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+    console.log("BE ip 1: ", req.headers['x-forwarded-for']);
+    console.log("BE ip 2: ", req.connection.remoteAddress);
 
     var date;
     var obj = {
@@ -113,6 +119,13 @@ app.post("/logmsg", (req, res) => {
         console.log('chunked body --------------------> ', JSON.stringify(body));
         res.end('ok');
     });
+});
+    
+app.get("/logmsg/:data", nocache, (req, res) => {
+    const data = req.params.data;
+
+    console.log("BE QUERY DATA: ", JSON.stringify(data));
+    res.send('BE gavo zinute');
 });
 
 app.get('/*', (req, res) => {
