@@ -104,13 +104,13 @@
 
             function sendMsgToserviceTEST() {
                 var xmlHttp = new XMLHttpRequest();
-                xmlHttp.open("POST", serviceOriginUrl + "/logmsg", false);
+                xmlHttp.open("POST", serviceOriginUrl + "/logmsg", true);
                 xmlHttp.send("siunciam labas");
             }
 
             function sendMsgToserviceTEST() {
                 var xmlHttp = new XMLHttpRequest();
-                xmlHttp.open("POST", serviceOriginUrl + "/logmsg", false);
+                xmlHttp.open("POST", serviceOriginUrl + "/logmsg", true);
                 xmlHttp.send("IP IP IP IP IP -> " + localIp);
             }
 
