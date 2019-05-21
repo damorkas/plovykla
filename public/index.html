@@ -100,6 +100,12 @@
                 xmlHttp.send(msg || "empty");
             }
 
+            function sendMsgToserviceTEST() {
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open("POST", serviceOriginUrl + "/logmsg", false);
+                xmlHttp.send("siunciam labas");
+            }
+
             function getCameraInfo() {
                 var xmlHttp = new XMLHttpRequest();
                 xmlHttp.open("GET", serviceOriginUrl + "/status/" + localIp, false);
@@ -183,6 +189,8 @@
                 //var url_string = window.location.href;
                 //var URL = URL || window.URL;
                 //var url2 = new URL(url_string);
+
+                sendMsgToserviceTEST();
 
                 var getQueryString = function (field, url) {
                     var href = url ? url : window.location.href;
