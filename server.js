@@ -103,14 +103,14 @@ app.post("/logmsg", (req, res) => {
     var body = "";
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-    console.log("ip --------------------> ", JSON.stringify(err));
+    console.log("ip --------------------> ", JSON.stringify(ip));
 
     req.on('data', chunk => {
         body += chunk.toString();
     });
 
     req.on('end', () => {
-        console.log('chunked body --------------------> ', JSON.stringify(err));
+        console.log('chunked body --------------------> ', JSON.stringify(body));
         res.end('ok');
     });
 });
