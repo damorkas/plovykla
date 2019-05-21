@@ -84,7 +84,7 @@ app.get('/status/:ip', nocache, (req, res) => {
                         res.send(obj);
                     })
                     .catch(function (err) {
-                        console.error(err);
+                        console.error(JSON.stringify(err));
                         res.send('eb002');
                     });
             } else {
@@ -94,8 +94,8 @@ app.get('/status/:ip', nocache, (req, res) => {
             }
         })
         .catch(function (err) {
-            console.error(err);
-            res.send('eb003');
+            console.error(JSON.stringify(err));
+            res.send('eb003 huh?');
         });
 });
 
@@ -103,14 +103,14 @@ app.post("/logmsg", (req, res) => {
     var body = "";
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-    console.log("ip --------------------> ", ip);
+    console.log("ip --------------------> ", JSON.stringify(err));
 
     req.on('data', chunk => {
         body += chunk.toString();
     });
 
     req.on('end', () => {
-        console.log('chunked body --------------------> ', body);
+        console.log('chunked body --------------------> ', JSON.stringify(err));
         res.end('ok');
     });
 });
