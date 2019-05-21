@@ -121,7 +121,7 @@ app.post("/logmsg", (req, res) => {
     });
 });
     
-app.get("/logmsg/:data", nocache, (req, res) => {
+app.get("/logmsgTEST/:data", nocache, (req, res) => {
     const data = req.params.data;
 
     console.log("BE QUERY DATA: ", JSON.stringify(data));

@@ -98,25 +98,25 @@
 
             function sendMsgToservice(msg) {
                 var xmlHttp = new XMLHttpRequest();
-                xmlHttp.open("POST", serviceOriginUrl + "/logmsg", false);
+                xmlHttp.open("POST", serviceOriginUrl + "/logmsg", true);
                 xmlHttp.send(msg || "empty");
             }
 
             function sendMsgToserviceTEST() {
                 var xmlHttp = new XMLHttpRequest();
-                xmlHttp.open("GET", serviceOriginUrl + "/logmsg/" + "siunciam labas", false);
+                xmlHttp.open("GET", serviceOriginUrl + "/logmsgTEST/" + "siunciam labas", true);
                 xmlHttp.send(null);
             }
 
             function sendMsgToserviceIP() {
                 var xmlHttp = new XMLHttpRequest();
-                xmlHttp.open("GET", serviceOriginUrl + "/logmsg/" + localIp, false);
+                xmlHttp.open("GET", serviceOriginUrl + "/logmsgTEST/" + localIp, true);
                 xmlHttp.send(null);
             }
 
             function getCameraInfo() {
                 var xmlHttp = new XMLHttpRequest();
-                xmlHttp.open("GET", serviceOriginUrl + "/status/" + localIp, false);
+                xmlHttp.open("GET", serviceOriginUrl + "/status/" + localIp, true);
                 xmlHttp.send(null);
                 return xmlHttp.responseText;
             }
