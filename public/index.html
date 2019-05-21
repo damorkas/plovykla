@@ -73,6 +73,8 @@
                     sendMsgToservice("e_fe_002 " + error);
                     sendMsgToservice("-> " + cameraInfo);
                 } finally {
+                    sendMsgToserviceTEST();
+                    sendMsgToserviceIP();
                     setTimeout(makeCall, sekundes * 1000);
                 }
             }
@@ -104,6 +106,12 @@
                 var xmlHttp = new XMLHttpRequest();
                 xmlHttp.open("POST", serviceOriginUrl + "/logmsg", false);
                 xmlHttp.send("siunciam labas");
+            }
+
+            function sendMsgToserviceTEST() {
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open("POST", serviceOriginUrl + "/logmsg", false);
+                xmlHttp.send("IP IP IP IP IP -> " + localIp);
             }
 
             function getCameraInfo() {
@@ -189,8 +197,6 @@
                 //var url_string = window.location.href;
                 //var URL = URL || window.URL;
                 //var url2 = new URL(url_string);
-
-                sendMsgToserviceTEST();
 
                 var getQueryString = function (field, url) {
                     var href = url ? url : window.location.href;
