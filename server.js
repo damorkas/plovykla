@@ -87,6 +87,7 @@ app.get('/status/:ip', nocache, (req, res) => {
                             obj.style = "<style> body { background-color: #cc0000; } </style>";
                         }
 
+                        console.error("It is a great success for: ", ip);
                         res.send(obj);
                     })
                     .catch(function (err) {
