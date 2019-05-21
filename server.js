@@ -38,11 +38,11 @@ app.get('/proxy', (req, res) => {
 
 app.get('/status/:ip', nocache, (req, res) => {
     // pasiimamas 192.xxx.x.xxx ip, kas nėr gerai..
-    const ip = req.params.ip;
+    var ip_query = req.params.ip;
 
     // bandom taip:
 
-    console.log("BE atejo IP: ", ip);
+    console.log("BE atejo IP: ", ip_query);
 
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
